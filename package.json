@@ -1,0 +1,27 @@
+{
+  "name": "obiba-progressbar",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "Simple progress bar",
+  "author": {
+    "name": "Ramin Haeri Azad",
+    "email": "rhaeri@maelstrom-research.org"
+  },
+  "license": "GNU Public License version 3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/obiba/obiba-progressbar"
+  },
+  "keywords": [
+    "open source",
+    "obiba"
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "~0.3",
+    "grunt-contrib-uglify": "~0.2",
+    "grunt-contrib-jshint": "~0.6",
+    "grunt-contrib-watch": "~0.5",
+    "grunt-contrib-css": "~0.9.0",
+    "grunt-contrib-cssmin": "~0.9.0"
+  }
+}

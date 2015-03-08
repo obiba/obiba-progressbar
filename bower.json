@@ -1,0 +1,21 @@
+{
+  "name": "obiba-progressbar",
+  "version": "1.0.0-SNAPSHOT",
+  "authors": [
+    "Ramin Haeri Azad <rhaeri@maelstrom-research.com>"
+  ],
+  "description": "Simple Progress bar",
+  "main": "obiba-progressbar.js",
+  "dependencies": {
+    "jquery": "~1.8.3"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "example"
+  ],
+  "license": "GNU Public License version 3"
+}
