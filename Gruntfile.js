@@ -8,7 +8,7 @@ module.exports = function (grunt) {
     meta: {
       pkg: grunt.file.readJSON("package.json"),
       srcFiles: [
-        "src/obiba-progessbar.js"
+        "src/obiba-progressbar.js"
       ],
       cssFiles: [
         "src/obiba-progressbar.css"
