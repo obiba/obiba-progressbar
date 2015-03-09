@@ -7,9 +7,8 @@
   var bar = null;
   var spinner = null;
   var options = {'duration': defaultDuration, 'complete': completeCallback, 'step': stepCallback, 'easing': 'linear'};
+  var template = "<div id='container'><div class='obiba-progress-bar'></div><div class='obiba-progress-spinner'><div class='obiba-progress-spinner-icon'></div></div></div>";
   var step = 0;
-  var timer = null;
-
 
   /**
    * @constructor
@@ -32,7 +31,7 @@
 
   function startAnimation() {
     create();
-    bar.animate({'width': '100%'}, options);
+    play();
   }
 
   function setPercentage(percent, resumeAnimation) {
@@ -40,8 +39,14 @@
     bar.stop().animate({'width': percent+'%'}, 250, function() {
       step = percent;
       updateDuration();
-      if (resumeAnimation) bar.animate({'width': '100%'}, options);
+      if (resumeAnimation) play();
     });
+  }
+
+  function play() {
+    bar.stop();
+    bar.animate({'width': '100%'}, options);
+    rotateSpinner();
   }
 
   function pauseAnimation() {
@@ -53,8 +58,7 @@
   function resumeAnimation() {
     if (container === null) return;
     updateDuration();
-    bar.animate({'width': '100%'}, options);
-    rotateSpinner();
+    play();
   }
 
   function incrementStep() {
@@ -75,10 +79,10 @@
       dispose();
     }
 
-    bar = $('<div class="obiba-progress-bar" ></div>');
-    spinner = $('<div class="obiba-progress-spinner"></div>').append($('<div class="obiba-progress-spinner-icon" ></div>'));
-    container = $('<div></div>').append(bar).append(spinner);
+    container = $(template);
     $("body").append(container);
+    bar = $('.obiba-progress-bar');
+    spinner = $('.obiba-progress-spinner-icon');
 
     rotateSpinner();
   }
@@ -99,27 +103,15 @@
    */
   function reset() {
     step = 0;
-    timer = null;
     options.duration = 9000;
   }
 
   function rotateSpinner() {
-    stopSpinner();
-    var degree = 0;
-    rotationCallback();
-
-    function rotationCallback() {
-      spinner.css({ WebkitTransform: 'rotate(' + degree + 'deg)'});
-      spinner.css({ '-moz-transform': 'rotate(' + degree + 'deg)'});
-      timer = setTimeout(function() {
-        degree += 5; rotationCallback();
-      }, 1);
-    }
+    $('.obiba-progress-spinner-icon').removeClass('animation-off');
   }
 
   function stopSpinner() {
-    clearTimeout(timer);
-    timer = null;
+    $('.obiba-progress-spinner-icon').addClass('animation-off');
   }
 
   /**
@@ -142,6 +134,7 @@
    */
   function completeCallback() {
     container.animate({'opacity': 0}, 250, dispose);
+    rotateSpinner();
   }
 
 }(jQuery));
