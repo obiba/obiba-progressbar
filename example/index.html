@@ -4,6 +4,15 @@
   <meta charset="utf-8">
   <title>Example of Obiba Progress Bar</title>
   <link rel="stylesheet" type="text/css" href="../dist/obiba-progressbar.css"/>
+  <style>
+    .result-container {
+      margin-top: 5px;
+    }
+    .result {
+      width: 400px;
+      height: 200px;
+    }
+  </style>
 </head>
 <body>
 
@@ -12,7 +21,12 @@
 <button id="pause">Pause</button>
 <button id="resume">Resume</button>
 <button id="inc">Increment</button>
+<button id="speed">speed</button>
 <button id="end">End</button>
+<button id="ajax">Ajax Call</button>
+<div class="result-container">
+  <textarea class="result" id="ajax-result"></textarea>
+</div>
 
 
 <script src="../bower_components/jquery/jquery.min.js"></script>

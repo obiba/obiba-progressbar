@@ -1,6 +1,12 @@
 (function () {
   var bar = new $.ObibaProgressBar();
 
+  $(document).ajaxComplete(function() {
+    console.log("ajaxComplete");
+    bar.inc(5);
+  });
+
+
   $("#reset").click(function(){
     $("div").width(0).css('opacity', 1);
   });
@@ -17,10 +23,21 @@
     bar.resume();
   });
   $("#inc").click(function(){
-    bar.inc();
+    bar.inc(1);
+  });
+  $("#speed").click(function(){
+    bar.duration(6000);
   });
   $("#end").click(function(){
     bar.finish();
   });
+  $("#ajax").click(function(){
+    $('#ajax-result').text(JSON.stringify("Sending..."));
+    $.ajax("http://api.openweathermap.org/data/2.5/weather?q=montreal,ca")
+      .done(function (data) {
+        $('#ajax-result').text(JSON.stringify(data));
+      });
+  });
+
 
 }());

@@ -1,45 +1,76 @@
-/*! obiba-progressbar - v1.0.0-SNAPSHOT
- *  License: GNU Public License version 3
- *  Date: 2015-03-08
+/*Copyright (c) 2015 OBiBa. All rights reserved.
+* This program and the accompanying materials
+* are made available under the terms of the GNU Public License v3.0.
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see  <http://www.gnu.org/licenses>
+
+* obiba-progressbar - v1.0.0-SNAPSHOT
+* Date: 2015-03-12
  */
 (function ($) {
 
   "use strict";
 
-  var defaultDuration = 10000;
-  var container = null;
   var bar = null;
   var spinner = null;
-  var options = {'duration': defaultDuration, 'complete': completeCallback, 'step': stepCallback, 'easing': 'linear'};
-  var template = "<div id='container'><div class='obiba-progress-bar'></div><div class='obiba-progress-spinner'><div class='obiba-progress-spinner-icon'></div></div></div>";
   var step = 0;
+  var animationSettings = {'duration': 15000, 'complete': completeCallback, 'step': stepCallback, 'easing': 'linear'};
+  var settings = {
+    duration: 15000,
+    showSpinner: true,
+    parent: 'body',
+    template: '<div id="container"><div class="obiba-progress-bar" role="bar"></div><div class="obiba-progress-spinner" role="spinner"><div class="obiba-progress-spinner-icon"></div></div></div>'
+  };
 
   /**
    * @constructor
    */
-  $.ObibaProgressBar = function () {
+  $.ObibaProgressBar = function (options) {
+    if (options) configure(options);
   };
 
   /**
    * public methods exposed
-   * @type {{start: startAnimation, inc: incrementStep, set: setPercentage, stop: pauseAnimation, resume: resumeAnimation, finish: finishAnimation}}
    */
   $.ObibaProgressBar.prototype = {
     start: startAnimation,
-    inc: incrementStep,
-    set: setPercentage,
     pause: pauseAnimation,
     resume: resumeAnimation,
-    finish: finishAnimation
+    finish: finishAnimation,
+    inc: incrementStep,
+    set: setPercentage,
+    duration: duration
   };
 
   function startAnimation() {
-    create();
+    render();
     play();
   }
 
+  function pauseAnimation() {
+    if (bar === null) return;
+    bar.stop();
+    stopSpinner();
+  }
+
+  function resumeAnimation() {
+    if (bar === null) return;
+    updateDuration();
+    play();
+  }
+
+  function finishAnimation() {
+    if (bar === null) return;
+    bar.stop().animate({'width': '100%'}, 'fast', completeCallback);
+  }
+
+  function incrementStep(inc) {
+    if (bar === null) return;
+    setPercentage(Math.min(100, Math.round(step) + inc), true);
+  }
+
   function setPercentage(percent, resumeAnimation) {
-    if (container === null) create();
+    if (bar === null) return;
     bar.stop().animate({'width': percent+'%'}, 250, function() {
       step = percent;
       updateDuration();
@@ -47,58 +78,60 @@
     });
   }
 
-  function play() {
+  function duration(time) {
+    if (bar === null) return;
     bar.stop();
-    bar.animate({'width': '100%'}, options);
-    rotateSpinner();
-  }
-
-  function pauseAnimation() {
-    if (container === null) return;
-    bar.stop();
-    stopSpinner();
-  }
-
-  function resumeAnimation() {
-    if (container === null) return;
+    settings.duration = time;
     updateDuration();
-    play();
+    resumeAnimation();
   }
 
-  function incrementStep() {
-    if (container === null) create();
-    setPercentage(Math.min(100, Math.round(step) + 10), true);
+  // P R I V A T E     F U N C T I O N S
+
+  function configure(options) {
+    if (options === null) return;
+    $.each(options, function(key, value){
+      if (value && settings.hasOwnProperty(key)) settings[key] = value;
+    });
+
+    animationSettings.duration = settings.duration;
   }
 
-  function finishAnimation() {
-    if (container === null) return;
-    bar.stop().animate({'width': '100%'}, 'fast', completeCallback);
+  function play() {
+    if (bar === null) return;
+    bar.stop();
+    bar.animate({'width': '100%'}, animationSettings);
+    rotateSpinner();
   }
 
   /**
    * Creates the widgets
    */
-  function create() {
-    if(container !== null) {
+  function render() {
+    if(bar !== null) {
       dispose();
     }
 
-    container = $(template);
-    $("body").append(container);
-    bar = $('.obiba-progress-bar');
-    spinner = $('.obiba-progress-spinner-icon');
-
-    rotateSpinner();
+    var template = $(settings.template);
+    if (template) {
+      $(settings.parent).append(template);
+      bar = $('[role="bar"]');
+      if (settings.showSpinner) {
+        spinner = $('[role="spinner"]');
+        rotateSpinner();
+      }
+    }
   }
 
   /**
    * Deletes all widgets and resets state
    */
   function dispose() {
-    if (container === null) return;
+    if (bar === null) return;
     bar.stop();
     stopSpinner();
-    container.remove();
+    bar.remove();
+    if (spinner !== null) spinner.remove();
     reset();
   }
 
@@ -107,26 +140,28 @@
    */
   function reset() {
     step = 0;
-    options.duration = 9000;
+    animationSettings.duration = settings.duration;
   }
 
   function rotateSpinner() {
-    $('.obiba-progress-spinner-icon').removeClass('animation-off');
+    if (spinner === null) return;
+    spinner.removeClass('animation-off');
   }
 
   function stopSpinner() {
-    $('.obiba-progress-spinner-icon').addClass('animation-off');
+    if (spinner === null) return;
+    spinner.addClass('animation-off');
   }
 
   /**
    * Need to recalculate remaining time for smooth animation
    */
   function updateDuration() {
-    options.duration = Math.round(defaultDuration*0.01*(100 - Math.round(step)));
+    animationSettings.duration = Math.round(settings.duration*0.01*(100 - Math.round(step)));
   }
 
   /**
-   * Saves current animation step for further interventions!
+   * Save current animation step for further interventions!
    * @param value
    */
   function stepCallback(value) {
@@ -137,8 +172,8 @@
    * Clean up callback
    */
   function completeCallback() {
-    container.animate({'opacity': 0}, 250, dispose);
-    rotateSpinner();
+    if (spinner === null) spinner.animate({'opacity': 0}, 250);
+    bar.animate({'opacity': 0}, 250, dispose);
   }
 
 }(jQuery));
