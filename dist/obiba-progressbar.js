@@ -19,7 +19,9 @@
     duration: 15000,
     showSpinner: true,
     parent: 'body',
-    template: '<div id="container"><div class="obiba-progress-bar" role="bar"></div><div class="obiba-progress-spinner" role="spinner"><div class="obiba-progress-spinner-icon"></div></div></div>'
+    template: '<div class="obiba-progress-bar" role="bar"></div><div class="obiba-progress-spinner" role="spinner"><div class="obiba-progress-spinner-icon"></div></div>',
+    barCssOverride: undefined,
+    spinnerCssOverride: undefined
   };
 
   /**
@@ -116,8 +118,22 @@
     if (template) {
       $(settings.parent).append(template);
       bar = $('[role="bar"]');
+
+      if (settings.barCssOverride) {
+        $.each(settings.barCssOverride, function(key, value){
+          bar.css(key, value);
+        });
+      }
+
       if (settings.showSpinner) {
         spinner = $('[role="spinner"]');
+
+        if (settings.spinnerCssOverride) {
+          $.each(settings.spinnerCssOverride, function(key, value){
+            spinner.css(key, value);
+          });
+        }
+
         rotateSpinner();
       }
     }
