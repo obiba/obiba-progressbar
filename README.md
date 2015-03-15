@@ -42,17 +42,17 @@ To show an Ajax call in progress:
     resume: resume the bar and spinner animation,
     finish: ends the animation,
     inc: increments the progress by a given percentage (0..100) without stopping the animation
-    set: set the progress by a given percentage (0..100) and stops the animation
+    set: sets the progress by a given percentage (0..100) and stops the animation
     duration: speeds up or down the animation by changing the remaining duration
     
 ## Configuration 
 
 These properties can be set at construction time:
 
-- duration: <animation duration in ms> | default: 15000
-- showSpinner: <true/flase> | default: true
-- parent: <a selector> | default: 'body' 
-- template: <two html tags with attributes role='bar' and role='spinner'>
-- barCssOverride: <css properties to override the default styling of the bar>
-- spinnerCssOverride: <css properties to override the default styling of the spinner>
+- **duration**: animation duration in ms - *default: 15000*
+- **showSpinner**: true/flase - *default: true*
+- **parent**: a selector - *default: 'body'* 
+- **template**: two html elements with attributes role='bar' and role='spinner' each
+- **barCssOverride**: css properties to override the default styling of the bar
+- **spinnerCssOverride**: css properties to override the default styling of the spinner
 
