@@ -1,5 +1,5 @@
 (function () {
-  var bar = new $.ObibaProgressBar({barCssOverride: {top:'200px', right:'100px', 'background-color': 'red'}});
+  var bar = new $.ObibaProgressBar();
 
   $(document).ajaxComplete(function() {
     console.log("ajaxComplete");
