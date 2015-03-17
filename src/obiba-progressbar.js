@@ -192,7 +192,7 @@
    * Clean up callback
    */
   function completeCallback() {
-    if (spinner === null) spinner.animate({'opacity': 0}, 250);
+    if (spinner != null) spinner.animate({'opacity': 0}, 250);
     bar.animate({'opacity': 0}, 250, dispose);
   }
 
