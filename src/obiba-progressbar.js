@@ -84,7 +84,7 @@
   function configure(options) {
     if (options === null) return;
     $.each(options, function(key, value){
-      if (value && settings.hasOwnProperty(key)) settings[key] = value;
+      if (value !== undefined && settings.hasOwnProperty(key)) settings[key] = value;
     });
 
     animationSettings.duration = settings.duration;
