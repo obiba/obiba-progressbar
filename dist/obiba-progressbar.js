@@ -5,7 +5,7 @@
 * along with this program.  If not, see  <http://www.gnu.org/licenses>
 
 * obiba-progressbar - v1.0.0-SNAPSHOT
-* Date: 2015-03-16
+* Date: 2015-03-17
  */
 (function ($) {
 
@@ -93,7 +93,7 @@
   function configure(options) {
     if (options === null) return;
     $.each(options, function(key, value){
-      if (value && settings.hasOwnProperty(key)) settings[key] = value;
+      if (value !== undefined && settings.hasOwnProperty(key)) settings[key] = value;
     });
 
     animationSettings.duration = settings.duration;
