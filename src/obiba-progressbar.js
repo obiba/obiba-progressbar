@@ -11,9 +11,10 @@
     showSpinner: true,
     parent: 'body',
     template: '<div class="obiba-progress-bar" role="bar"></div><div class="obiba-progress-spinner" role="spinner"><div class="obiba-progress-spinner-icon"></div></div>',
-    barCssOverride: undefined,
-    spinnerCssOverride: undefined
+    barCssOverride: null,
+    spinnerCssOverride: null
   };
+  var defaultSettings =  jQuery.extend(true, {}, settings);
 
   /**
    * @constructor
@@ -32,7 +33,8 @@
     finish: finishAnimation,
     inc: incrementStep,
     set: setPercentage,
-    duration: duration
+    duration: duration,
+    update: updateAnimation
   };
 
   function startAnimation() {
@@ -77,6 +79,23 @@
     settings.duration = time;
     updateDuration();
     resumeAnimation();
+  }
+
+  function updateAnimation(options) {
+    pauseAnimation();
+
+    if (options) {
+      // start where we had paused
+      if (!options.hasOwnProperty('barCssOverride')) options.barCssOverride = {};
+      options.barCssOverride.width = step+'%';
+      configure(options);
+    } else {
+      settings = jQuery.extend(true, {}, defaultSettings);
+      configure(settings);
+      reset();
+    }
+    updateDuration();
+    startAnimation();
   }
 
   // P R I V A T E     F U N C T I O N S
