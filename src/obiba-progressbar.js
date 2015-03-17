@@ -61,6 +61,7 @@
 
   function incrementStep(inc) {
     if (bar === null) return;
+    pauseAnimation();
     setPercentage(Math.min(100, Math.round(step) + inc), true);
   }
 
