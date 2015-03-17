@@ -35,7 +35,7 @@
   border: solid 2px transparent;
   border-top-color: #29d;
   border-left-color: #29d;
-  border-radius: 50%;
+  border-radius: 50% !important;
 }
 
 .animation-off {
