@@ -119,10 +119,14 @@
       $(settings.parent).append(template);
       bar = $('[role="bar"]');
       if (bar.length > 0) overrideBarCss();
+
+      spinner = $('[role="spinner"]');
       if (settings.showSpinner) {
-        spinner = $('[role="spinner"]');
         if (spinner.length > 0) overrideSpinnerCss();
         rotateSpinner();
+      } else {
+        spinner.remove();
+        spinner = null;
       }
     }
   }
@@ -201,7 +205,7 @@
    * Clean up callback
    */
   function completeCallback() {
-    if (spinner === null) spinner.animate({'opacity': 0}, 250);
+    if (spinner) spinner.animate({'opacity': 0}, 250);
     bar.animate({'opacity': 0}, 250, dispose);
   }
 
