@@ -109,24 +109,37 @@
     if (template) {
       $(settings.parent).append(template);
       bar = $('[role="bar"]');
-
-      if (settings.barCssOverride) {
-        $.each(settings.barCssOverride, function(key, value){
-          bar.css(key, value);
-        });
-      }
-
+      if (bar.length > 0) overrideBarCss();
       if (settings.showSpinner) {
         spinner = $('[role="spinner"]');
-
-        if (settings.spinnerCssOverride) {
-          $.each(settings.spinnerCssOverride, function(key, value){
-            spinner.css(key, value);
-          });
-        }
-
+        if (spinner.length > 0) overrideSpinnerCss();
         rotateSpinner();
       }
+    }
+  }
+
+  function overrideBarCss() {
+    if (settings.barCssOverride) {
+      $.each(settings.barCssOverride, function(key, value){
+        bar.css(key, value);
+      });
+    }
+  }
+
+  function overrideSpinnerCss() {
+    if (settings.spinnerCssOverride) {
+      $.each(settings.spinnerCssOverride, function(key, value){
+        if (key === 'iconCssOverride') {
+          var icon = $('.obiba-progress-spinner-icon', spinner);
+          if (icon.length > 0) {
+            $.each(settings.spinnerCssOverride.iconCssOverride, function(key, value){
+              icon.css(key, value);
+            });
+          }
+          return;
+        }
+        spinner.css(key, value);
+      });
     }
   }
 

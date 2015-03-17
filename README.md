@@ -55,4 +55,22 @@ These properties can be set at construction time:
 - **template**: two html elements with attributes role='bar' and role='spinner' each
 - **barCssOverride**: css properties to override the default styling of the bar
 - **spinnerCssOverride**: css properties to override the default styling of the spinner
+- **iconCssOverride**: css properties to override the default styling of the spinner's icon
 
+Below is an example of a css overriding:
+```javascript
+var bar = new $.ObibaProgressBar({
+    barCssOverride: {
+      background: '#ff0000'
+    },
+    spinnerCssOverride: {
+      top: 300,
+      iconCssOverride: {
+        width: '30px',
+        height: '30px',
+        'border-top-color': '#222'
+      }
+    }
+  }
+);
+```
