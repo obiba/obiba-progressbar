@@ -4,8 +4,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see  <http://www.gnu.org/licenses>
 
-* obiba-progressbar - v1.0.0-SNAPSHOT
-* Date: 2016-11-28
+* obiba-progressbar - v1.0.1
+* Date: 2016-11-29
  */
 (function ($) {
 
